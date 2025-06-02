@@ -6,6 +6,7 @@ import { orderService } from '../services/api';
 import { customerService } from '../services/api';
 import LoadingSpinner from '../components/LoadingSpinner';
 import ErrorMessage from '../components/ErrorMessage';
+import BulkUploadButton from '../components/BulkUploadButton';
 
 function Orders() {
   const location = useLocation();
@@ -132,6 +133,16 @@ function Orders() {
     setFormData({ ...formData, [name]: value });
   };
 
+  const handleBulkUpload = async (file) => {
+    try {
+      const result = await orderService.bulkUpload(file);
+      alert(`Successfully uploaded ${result.data.success} orders. Failed: ${result.data.failed}`);
+      fetchOrders(); // Refresh the list
+    } catch (error) {
+      alert('Failed to upload orders. Please check your CSV file format.');
+    }
+  };
+
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString('en-US', {
       month: 'short',
@@ -156,6 +167,16 @@ function Orders() {
           <p className="mt-1 text-sm text-gray-500">
             Track all customer orders and their details.
           </p>
+        </div>
+        <div className="mt-4 sm:mt-0 flex space-x-3">
+          <BulkUploadButton onUpload={handleBulkUpload} />
+          <button
+            onClick={handleAddOrder}
+            className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          >
+            <Plus className="h-4 w-4 mr-2" />
+            Add Order
+          </button>
         </div>
       </div>
 

@@ -1,14 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
 import { Plus, Search, Edit, Trash2, ChevronLeft, ChevronRight } from 'lucide-react';
-
-const instance = axios.create({
-  baseURL: 'http://localhost:5000',
-  withCredentials: true,
-});
-
-// export default instance;
+import { customerService } from '../services/api';
+import BulkUploadButton from '../components/BulkUploadButton';
 
 function Customers() {
   const [customers, setCustomers] = useState([]);
@@ -36,10 +30,9 @@ function Customers() {
   const fetchCustomers = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`/customers`);
-      
-      setCustomers(response.data.data);
-      setTotalPages(response.data.pagination.pages);
+      const response = await customerService.getAll(page, 10, search);
+      setCustomers(response.data);
+      setTotalPages(response.pagination.pages);
       setLoading(false);
     } catch (err) {
       console.error('Error fetching customers:', err);
@@ -83,7 +76,8 @@ function Customers() {
   const handleDeleteCustomer = async (id) => {
     if (window.confirm('Are you sure you want to delete this customer?')) {
       try {
-        await axios.delete(`/customers/${id}`);
+        await customerService.delete(id);
+        fetchCustomers(); // Refresh the list
       } catch (err) {
         console.error('Error deleting customer:', err);
         alert('Failed to delete customer');
@@ -100,12 +94,13 @@ function Customers() {
       };
 
       if (isEditing) {
-        await axios.put(`/customers/${currentId}`, formattedData);
+        await customerService.update(currentId, formattedData);
       } else {
-        await axios.post('/customers', formattedData);
+        await customerService.create(formattedData);
       }
       
       setIsModalOpen(false);
+      fetchCustomers(); // Refresh the list
     } catch (err) {
       console.error('Error saving customer:', err);
       alert('Failed to save customer');
@@ -117,6 +112,16 @@ function Customers() {
     setFormData({ ...formData, [name]: value });
   };
 
+  const handleBulkUpload = async (file) => {
+    try {
+      const result = await customerService.bulkUpload(file);
+      alert(`Successfully uploaded ${result.data.success} customers. Failed: ${result.data.failed}`);
+      fetchCustomers(); // Refresh the list
+    } catch (error) {
+      alert('Failed to upload customers. Please check your CSV file format.');
+    }
+  };
+
   return (
     <div className="space-y-6">
       <div className="sm:flex sm:items-center sm:justify-between">
@@ -125,6 +130,16 @@ function Customers() {
           <p className="mt-1 text-sm text-gray-500">
             Manage your customer database and track their information.
           </p>
+        </div>
+        <div className="mt-4 sm:mt-0 flex space-x-3">
+          <BulkUploadButton onUpload={handleBulkUpload} />
+          <button
+            onClick={handleAddCustomer}
+            className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          >
+            <Plus className="h-4 w-4 mr-2" />
+            Add Customer
+          </button>
         </div>
       </div>
 
