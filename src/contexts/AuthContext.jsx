@@ -19,21 +19,9 @@ export function AuthProvider({ children }) {
     const checkLoggedIn = async () => {
       try {
         const res = await axios.get(`${import.meta.env.VITE_API_URL}/auth/status`);
-        console.log('Auth response:', res.data);
-        // If we get any response, try to use it
-        if (res.data) {
-          setUser(res.data.user || res.data);
-        } else {
-          setUser(null);
-        }
+        setUser(res.data.user);
       } catch (error) {
-        console.log('Auth error:', error.response?.data);
-        // If we get an error response with data, try to use it
-        if (error.response?.data) {
-          setUser(error.response.data.user || error.response.data);
-        } else {
-          setUser(null);
-        }
+        setUser(null);
       } finally {
         setLoading(false);
       }
