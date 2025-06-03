@@ -1,137 +1,125 @@
-# Marketing Campaign Manager - Frontend
+# MiniCRM Frontend
 
-This is the frontend application for the Marketing Campaign Manager, built with React and Tailwind CSS.
+A modern React-based frontend for the MiniCRM platform, providing an intuitive interface for customer management, order tracking, and marketing campaigns.
 
-## Features
+## 🚀 Features
 
-- **Dashboard**
-  - Overview of key metrics
-  - Recent orders tracking
-  - Customer statistics
-  - Campaign performance summary
+- **Modern UI/UX**
+  - Responsive design
+  - Dark/Light mode support
+  - Interactive dashboards
+  - Real-time updates
 
 - **Customer Management**
-  - View and manage customer profiles
-  - Track customer spending
+  - Customer list with search and filters
+  - Detailed customer profiles
   - Customer segmentation
-  - Bulk customer import via CSV
-  - Search and filter capabilities
+  - Bulk import functionality
 
 - **Order Management**
-  - Track and manage customer orders
-  - View order history
-  - Bulk order import via CSV
-  - Search and filter functionality
+  - Order tracking
+  - Spending analytics
+  - Order history
+  - Bulk order processing
 
 - **Campaign Management**
-  - Create and manage marketing campaigns
+  - Campaign creation wizard
   - AI-powered message generation
-  - Target audience segmentation
-  - Campaign performance tracking
-  - Message customization
+  - Campaign scheduling
+  - Performance analytics
 
-- **User Interface**
-  - Responsive design
-  - Modern and clean UI
-  - Intuitive navigation
-  - Loading states and error handling
-  - Toast notifications
+## 🛠 Tech Stack
 
-## Tech Stack
+- React 18
+- Vite
+- Tailwind CSS
+- React Router
+- Axios
+- React Query
+- React Hot Toast
 
-- React
-- React Router for navigation
-- Axios for API calls
-- Tailwind CSS for styling
-- React Hot Toast for notifications
-- Lucide React for icons
-
-## Prerequisites
+## 📋 Prerequisites
 
 - Node.js (v14 or higher)
 - npm or yarn
 - Backend server running
 
-## Installation
+## ⚙️ Environment Setup
+
+Create a `.env` file in the root directory:
+
+```env
+# API Configuration
+VITE_API_URL=http://localhost:5000/api
+VITE_APP_NAME=MiniCRM
+VITE_APP_ENV=development
+```
+
+## 🚀 Installation
 
 1. Clone the repository
-2. Navigate to the frontend directory:
-   ```bash
-   cd frontend
-   ```
-3. Install dependencies:
+2. Install dependencies:
    ```bash
    npm install
    ```
+3. Set up environment variables
 4. Start the development server:
    ```bash
    npm run dev
    ```
 
-## Project Structure
+## 📁 Project Structure
 
 ```
 src/
-├── components/         # Reusable UI components
-├── pages/             # Page components
-├── services/          # API services
-├── context/           # React context
-├── hooks/             # Custom hooks
-├── utils/             # Utility functions
-└── assets/            # Static assets
+├── components/     # Reusable UI components
+├── contexts/       # React contexts
+├── hooks/         # Custom React hooks
+├── pages/         # Page components
+├── services/      # API services
+├── utils/         # Utility functions
+└── assets/        # Static assets
 ```
 
-## Key Components
+## 🔑 Key Features
 
-### Pages
-- `Dashboard.jsx` - Main dashboard with metrics
-- `Customers.jsx` - Customer management
-- `Orders.jsx` - Order management
-- `CreateCampaign.jsx` - Campaign creation
-- `Campaigns.jsx` - Campaign management
+### Authentication
+- Google OAuth integration
+- Protected routes
+- Session management
 
-### Components
-- `LoadingSpinner.jsx` - Loading state component
-- `ErrorMessage.jsx` - Error display component
-- `Pagination.jsx` - Pagination controls
-- `SearchBar.jsx` - Search functionality
+### Data Management
+- Real-time updates
+- Optimistic updates
+- Error handling
+- Loading states
 
-## API Integration
+### UI Components
+- Responsive layout
+- Interactive tables
+- Form validation
+- Toast notifications
+- Loading spinners
 
-The frontend communicates with the backend through the following services:
-- `api.js` - Base API configuration
-- `authService.js` - Authentication services
-- `customerService.js` - Customer management
-- `orderService.js` - Order management
-- `campaignService.js` - Campaign management
+## 🎨 Styling
 
-## Environment Variables
+- Tailwind CSS for styling
+- Custom components
+- Responsive design
+- Dark/Light mode support
 
-Create a `.env` file in the root directory:
+## 🧪 Testing
 
-```env
-VITE_API_URL=http://localhost:5000
+```bash
+npm test
 ```
 
-## Development
-
-- Development server runs on `http://localhost:5173`
-- API requests are proxied to the backend server
-- Hot module replacement enabled
-- ESLint for code quality
-- Prettier for code formatting
-
-## Building for Production
+## 📦 Build
 
 ```bash
 npm run build
 ```
 
-The build output will be in the `dist` directory.
+## 📝 License
 
-## Browser Support
-
-- Chrome (latest)
-- Firefox (latest)
-- Safari (latest)
-- Edge (latest) 
+MIT 

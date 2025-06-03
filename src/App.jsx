@@ -4,9 +4,9 @@ import { useAuth } from './contexts/AuthContext';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Customers from './pages/Customers';
-import CustomerDetail from './pages/CustomerDetail';
+// import CustomerDetail from './pages/CustomerDetail';
 import Orders from './pages/Orders';
-import OrderDetail from './pages/OrderDetail';
+// import OrderDetail from './pages/OrderDetail';
 import Campaigns from './pages/Campaigns';
 import CampaignDetail from './pages/CampaignDetail';
 import CreateCampaign from './pages/CreateCampaign';
@@ -39,19 +39,20 @@ function App() {
 
   return (
     <Routes>
-      <Route path="/login" element={!user ? <Login /> : <Navigate to="/" />} />
-      
-      <Route element={<ProtectedRoute />}>
-        <Route element={<Layout />}>
+      <Route element={<Layout />}>
+        <Route path="/login" element={!user ? <Login /> : <Navigate to="/" />} />
+        
+        <Route element={<ProtectedRoute />}>
           <Route path="/" element={<Dashboard />} />
           <Route path="/customers" element={<Customers />} />
-          <Route path="/customers/:id" element={<CustomerDetail />} />
+          {/* <Route path="/customers/:id" element={<CustomerDetail />} /> */}
           <Route path="/orders" element={<Orders />} />
-          <Route path="/orders/:id" element={<OrderDetail />} />
+          {/* <Route path="/orders/:id" element={<OrderDetail />} /> */}
           <Route path="/campaigns" element={<Campaigns />} />
           <Route path="/campaigns/create" element={<CreateCampaign />} />
           <Route path="/campaigns/:id" element={<CampaignDetail />} />
           <Route path="/campaigns/history" element={<CampaignHistory />} />
+          {/* <Route path="/campaigns" element={<CampaignHistory />} /> */}
         </Route>
       </Route>
       

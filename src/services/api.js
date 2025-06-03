@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // Configure axios defaults
-axios.defaults.baseURL = 'http://localhost:5000/api';
+axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 axios.defaults.withCredentials = true;
 
 // Add response interceptor for error handling
@@ -94,8 +94,8 @@ export const campaignService = {
     const response = await axios.post('/campaigns', data);
     return response.data;
   },
-  previewAudience: async (rules) => {
-    const response = await axios.post('/campaigns/preview-audience', { rules });
+  previewAudience: async (segmentRules) => {
+    const response = await axios.post('/campaigns/preview-audience', { segmentRules });
     return response.data;
   },
   generateMessage: async (prompt, audience) => {
@@ -104,6 +104,14 @@ export const campaignService = {
   },
   send: async (id) => {
     const response = await axios.post(`/campaigns/${id}/send`);
+    return response.data;
+  },
+  delete: async (id) => {
+    const response = await axios.delete(`/campaigns/${id}`);
+    return response.data;
+  },
+  testEmail: async (email) => {
+    const response = await axios.post('/campaigns/test-email', { email });
     return response.data;
   }
 };

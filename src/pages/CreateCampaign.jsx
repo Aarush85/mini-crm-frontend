@@ -17,9 +17,9 @@ function CreateCampaign() {
   const [formData, setFormData] = useState({
     name: '',
     description: '',
-    segmentRules: [{ field: 'name', operator: 'equals', value: '', logicOperator: 'AND' }],
+    segmentRules: [{ field: 'tags', operator: 'equals', value: '', logicOperator: 'AND' }],
     message: '',
-    
+    scheduledFor: ''
   });
 
   const [aiPrompt, setAiPrompt] = useState('');
@@ -66,7 +66,7 @@ setTargetAudience(Array.isArray(audience) ? audience.slice(0, 5) : []);
 setAudienceCount(typeof count === 'number' ? count : 0);
       setPreviewingAudience(false);
     } catch (error) {
-      console.error('Error previewing audience:', error);
+      // console.error('Error previewing audience:', error);
       setError('Failed to preview audience');
       setPreviewingAudience(false);
     }
@@ -88,11 +88,11 @@ setAudienceCount(typeof count === 'number' ? count : 0);
           message: response.data.message
         }));
       } else {
-        toast.error('Failed to generate message');
+        // toast.error('Failed to generate message'); // Using toast for user feedback
       }
     } catch (error) {
-      console.error('Error generating message:', error);
-      toast.error(error.response?.data?.message || 'Failed to generate message');
+      // console.error('Error generating message:', error);
+      // toast.error(error.response?.data?.message || 'Failed to generate message'); // Using toast for user feedback
     } finally {
       setIsGeneratingMessage(false);
     }
@@ -105,34 +105,58 @@ setAudienceCount(typeof count === 'number' ? count : 0);
       setError(null);
       
       // Validate required fields
-      if (!formData.name || !formData.message) {
+      if (!formData.name || !formData.message || !formData.subject) {
         setError('Please fill in all required fields');
         setLoading(false);
         return;
       }
-            // In a real implementation, we'd call the actual API endpoint
-      // const response = await axios.post('/campaigns', formData);
 
+      // Validate message length
+      if (formData.message.length < 10) {
+        setError('Message must be at least 10 characters long');
+        setLoading(false);
+        return;
+      }
+
+      // Validate segment rules
+      if (!formData.segmentRules.length || formData.segmentRules.some(rule => !rule.value)) {
+        setError('Please complete all segment rules');
+        setLoading(false);
+        return;
+      }
+
+      // Format the data according to the backend schema
+      const campaignData = {
+        name: formData.name,
+        description: formData.description || '',
+        subject: formData.subject,
+        segmentRules: formData.segmentRules.map(rule => ({
+          field: rule.field,
+          operator: rule.operator,
+          value: rule.field === 'totalSpendings' ? Number(rule.value) : rule.value,
+          logicOperator: rule.logicOperator
+        })),
+        message: formData.message,
+        scheduledFor: formData.scheduledFor || undefined
+      };
       
-      const response = await campaignService.create(formData);
+      const response = await campaignService.create(campaignData);
       if (response && response.success) {
         navigate('/campaigns');
       } else {
         setError('Failed to create campaign');
       }
     } catch (error) {
-      console.error('Error creating campaign:', error);
-      setError('Failed to create campaign');
+      // console.error('Error creating campaign:', error);
+      // setError(error.response?.data?.message || 'Failed to create campaign');
       setLoading(false);
     }
   };
 
   const getFieldOptions = () => [
-    // { value: 'name', label: 'Name' },
-    // { value: 'email', label: 'Email' },
-    // { value: 'phone', label: 'Phone' },
     { value: 'tags', label: 'Tags' },
     { value: 'totalSpendings', label: 'Total Spendings' },
+    { value: 'location', label: 'Location' }
   ];
 
   const getOperatorOptions = (field) => {

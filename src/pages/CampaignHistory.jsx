@@ -48,7 +48,7 @@ function CampaignHistory() {
           Back to Campaigns
         </Link>
       </div>
-      <div className="bg-white shadow rounded-lg overflow-hidden">
+      <div className="bg-white shadow rounded-lg">
         <div className="overflow-x-auto">
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
@@ -68,9 +68,8 @@ function CampaignHistory() {
               ) : (
                 campaigns.map((campaign) => (
                   <tr key={campaign._id}>
-                    <td className="px-6 py-4 whitespace-nowrap">
+                    <td className="px-6 py-4">
                       <div className="text-sm font-medium text-gray-900">{campaign.name}</div>
-                      <div className="text-sm text-gray-500">{campaign.description}</div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                       {campaign.status === 'sent' ? formatDate(campaign.updatedAt || campaign.createdAt) : '-'}
@@ -82,7 +81,7 @@ function CampaignHistory() {
                         campaign.status === 'failed' ? 'bg-red-100 text-red-800' :
                         'bg-gray-100 text-gray-800'
                       }`}>
-                        {campaign.status.charAt(0).toUpperCase() + campaign.status.slice(1)}
+                        {(campaign.status || 'draft').charAt(0).toUpperCase() + (campaign.status || 'draft').slice(1)}
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
